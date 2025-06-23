@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bananichiki - Личный кабинет</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Pacifico&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff85a2;
+            --primary-dark: #e76f8c;
+            --secondary-color: #ffb6c1;
+            --dark-color: #555;
+            --light-color: #fff;
+            --gray-color: #fff5f7;
+            --text-color: #444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: #fff9fb;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text {
+            font-family: 'Pacifico', cursive;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .logo-subtext {
+            font-size: 12px;
+            color: var(--dark-color);
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-list li {
+            margin-left: 30px;
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-list a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-list a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .cta-button {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            color: var(--light-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 60px;
+            min-height: calc(100vh - 180px);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--primary-dark);
+            font-size: 36px;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Account Section */
+        .account-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .account-sidebar {
+            flex: 1;
+            min-width: 250px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(255, 105, 140, 0.1);
+            height: fit-content;
+        }
+
+        .account-content {
+            flex: 3;
+            min-width: 300px;
+        }
+
+        .user-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--primary-color);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .user-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-dark);
+        }
+
+        .user-email {
+            color: var(--dark-color);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .account-menu {
+            list-style: none;
+        }
+
+        .account-menu li {
+            margin-bottom: 10px;
+        }
+
+        .account-menu a {
+            display: block;
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .account-menu a:hover, .account-menu a.active {
+            background-color: var(--gray-color);
+            color: var(--primary-color);
+        }
+
+        .account-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Visits Section */
+        .visits-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(255, 105, 140, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gray-color);
+        }
+
+        .visits-list {
+            list-style: none;
+        }
+
+        .visit-item {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--gray-color);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .visit-item:last-child {
+            border-bottom: none;
+        }
+
+        .visit-date {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .visit-service {
+            margin-bottom: 5px;
+        }
+
+        .visit-doctor {
+            color: var(--dark-color);
+            font-size: 14px;
+        }
+
+        .visit-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed {
+            background-color: #e3f9e5;
+            color: #28a745;
+        }
+
+        .status-upcoming {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-canceled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Medical History */
+        .medical-history {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(255, 105, 140, 0.1);
+        }
+
+        .history-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray-color);
+        }
+
+        .history-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .history-date {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .history-procedure {
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .history-details {
+            font-size: 14px;
+            color: var(--dark-color);
+        }
+
+        /* Profile Edit Section */
+        .profile-edit-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(255, 105, 140, 0.1);
+            display: none;
+        }
+
+        .profile-edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+
+        .form-group input, .form-group textarea {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .avatar-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-button {
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .file-input-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .cancel-button {
+            background-color: #f0f0f0;
+            color: var(--dark-color);
+        }
+
+        .cancel-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, #ff85a2 0%, #ffb6c1 100%);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .footer-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .footer-contacts i {
+            margin-right: 10px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #ffe5e9;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-list {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .account-container {
+                flex-direction: column;
+            }
+            
+            .account-sidebar {
+                margin-bottom: 30px;
+            }
+            
+            .header-content {
+                padding: 10px 0;
+            }
+            
+            main {
+                padding-top: 100px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .visit-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .visit-status {
+                margin-top: 10px;
+            }
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        
+        .back-to-top:hover {
+            background-color: #ff5252;
+            transform: translateY(-3px);
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-text">Bananichiki</span>
+                    <span class="logo-subtext">Стоматология с улыбкой</span>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="2.html">Услуги</a></li>
+                        <li><a href="3.html">О нас</a></li>
+                        <li><a href="4.html">Контакты</a></li>
+                        <li><a href="5.html">Отзывы</a></li>
+                        <li><a href="account.html" class="active">Личный кабинет</a></li>
+                    </ul>
+                    <div class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1 class="page-title">Личный кабинет</h1>
+            
+            <div class="account-container">
+                <aside class="account-sidebar">
+                    <div class="user-profile">
+                        <img src="pic/30.jpg" alt="Аватар пользователя" class="user-avatar" id="userAvatar">
+                        <h3 class="user-name" id="userName">Валерия</h3>
+                        <p class="user-email" id="userEmail">valval@gmail.com</p>
+                        <a href="6.html" class="cta-button">Новая запись</a>
+                    </div>
+                    
+                    <ul class="account-menu">
+                        <li><a href="#" class="active" id="showVisits"><i class="fas fa-calendar-alt"></i> Мои записи</a></li>
+                        <li><a href="#" id="showMedicalHistory"><i class="fas fa-tooth"></i> История лечения</a></li>
+                        <li><a href="#" id="showProfileEdit"><i class="fas fa-user-edit"></i> Профиль</a></li>
+                    </ul>
+                </aside>
+                
+                <div class="account-content">
+                    <!-- Секция с записями -->
+                    <section class="visits-section" id="visitsSection">
+                        <h2 class="section-title">Ближайшие записи</h2>
+                        <ul class="visits-list">
+                            <li class="visit-item">
+                                <div>
+                                    <div class="visit-date">15 июня 2025, 14:30</div>
+                                    <div class="visit-service">Профессиональная чистка зубов</div>
+                                    <div class="visit-doctor">Доктор: Петрова Елена</div>
+                                </div>
+                                <span class="visit-status status-upcoming">Запланировано</span>
+                            </li>
+                            <li class="visit-item">
+                                <div>
+                                    <div class="visit-date">22 июня 2025, 11:00</div>
+                                    <div class="visit-service">Консультация ортодонта</div>
+                                    <div class="visit-doctor">Доктор: Иванова Анна</div>
+                                </div>
+                                <span class="visit-status status-upcoming">Запланировано</span>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <section class="visits-section" id="pastVisitsSection">
+                        <h2 class="section-title">Прошедшие визиты</h2>
+                        <ul class="visits-list">
+                            <li class="visit-item">
+                                <div>
+                                    <div class="visit-date">10 мая 2025, 16:00</div>
+                                    <div class="visit-service">Лечение кариеса</div>
+                                    <div class="visit-doctor">Доктор: Сидоров Максим</div>
+                                </div>
+                                <span class="visit-status status-completed">Завершено</span>
+                            </li>
+                            <li class="visit-item">
+                                <div>
+                                    <div class="visit-date">25 апреля 2025, 12:30</div>
+                                    <div class="visit-service">Осмотр и консультация</div>
+                                    <div class="visit-doctor">Доктор: Петрова Елена</div>
+                                </div>
+                                <span class="visit-status status-completed">Завершено</span>
+                            </li>
+                            <li class="visit-item">
+                                <div>
+                                    <div class="visit-date">15 марта 2025, 10:00</div>
+                                    <div class="visit-service">Удаление зуба</div>
+                                    <div class="visit-doctor">Доктор: Козлов Дмитрий</div>
+                                </div>
+                                <span class="visit-status status-completed">Завершено</span>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <!-- Секция истории лечения -->
+                    <section class="medical-history" id="medicalHistorySection" style="display: none;">
+                        <h2 class="section-title">История лечения</h2>
+                        <div class="history-item">
+                            <div class="history-date">10 мая 2025</div>
+                            <div class="history-procedure">Лечение кариеса</div>
+                            <div class="history-details">
+                                <p>Проведено лечение кариеса с установкой светоотверждаемой пломбы Estelite. Анестезия Ultracain DS.</p>
+                                <p>Рекомендации: избегать твердой пищи в течение 2 часов.</p>
+                            </div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-date">15 марта 2025</div>
+                            <div class="history-procedure">Удаление зуба</div>
+                            <div class="history-details">
+                                <p>Проведено простое удаление зуба мудрости под местной анестезией. Кровотечение остановлено, наложен тампон с гемостатической губкой.</p>
+                                <p>Рекомендации: не полоскать рот в течение суток, принимать назначенные препараты.</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Секция редактирования профиля -->
+                    <section class="profile-edit-section" id="profileEditSection">
+                        <h2 class="section-title">Редактирование профиля</h2>
+                        <form class="profile-edit-form" id="profileForm">
+                            <div class="avatar-upload">
+                                <img src="pic/30.jpg" alt="Аватар пользователя" class="avatar-preview" id="avatarPreview">
+                                <div class="file-input-wrapper">
+                                    <span class="file-input-button">Выбрать фото</span>
+                                    <input type="file" class="file-input" id="avatarInput" accept="image/*">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="nameInput">Имя</label>
+                                <input type="text" id="nameInput" value="Валерия" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="emailInput">Email</label>
+                                <input type="email" id="emailInput" value="valval@gmail.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phoneInput">Телефон</label>
+                                <input type="tel" id="phoneInput" value="+7 (925) 438-56-88">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="birthdayInput">Дата рождения</label>
+                                <input type="date" id="birthdayInput" value="1990-01-01">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="addressInput">Адрес</label>
+                                <input type="text" id="addressInput" value="г. Москва, ул. Примерная, д. 1">
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="cta-button cancel-button" id="cancelEdit">Отмена</button>
+                                <button type="submit" class="cta-button">Сохранить</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-contacts">
+                <p><i class="fas fa-envelope"></i> Bananchiki12@mail.ru</p>
+                <p><i class="fas fa-phone"></i> +7 (925) 438 56-88</p>
+            </div>
+            <div class="social-links">
+                <a href="https://www.instagram.com/valeriaaalims?igsh=ZzA1NTYyN3MyZ3c1&utm_source=qr"><i class="fab fa-instagram"></i></a>
+                <a href="https://vk.com/lerkavs"><i class="fab fa-vk"></i></a>
+                <a href="https://wa.me/79254385688"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p>&copy; 2025 Bananichiki. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <div class="back-to-top" title="Наверх">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle functionality
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navList = document.querySelector('.nav-list');
+            
+            if (mobileMenuBtn && navList) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navList.style.display = navList.style.display === 'flex' ? 'none' : 'flex';
+                });
+            }
+            
+            // Responsive adjustments for nav list
+            function handleResize() {
+                if (window.innerWidth > 768) {
+                    navList.style.display = 'flex';
+                } else {
+                    navList.style.display = 'none';
+                }
+            }
+            
+            window.addEventListener('resize', handleResize);
+            handleResize();
+            
+            // Back to top button functionality
+            const backToTopButton = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('active');
+                } else {
+                    backToTopButton.classList.remove('active');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Profile edit functionality
+            const showVisitsBtn = document.getElementById('showVisits');
+            const showMedicalHistoryBtn = document.getElementById('showMedicalHistory');
+            const showProfileEditBtn = document.getElementById('showProfileEdit');
+            const visitsSection = document.getElementById('visitsSection');
+            const pastVisitsSection = document.getElementById('pastVisitsSection');
+            const medicalHistorySection = document.getElementById('medicalHistorySection');
+            const profileEditSection = document.getElementById('profileEditSection');
+            const profileForm = document.getElementById('profileForm');
+            const cancelEditBtn = document.getElementById('cancelEdit');
+            const avatarInput = document.getElementById('avatarInput');
+            const avatarPreview = document.getElementById('avatarPreview');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+            const nameInput = document.getElementById('nameInput');
+            const emailInput = document.getElementById('emailInput');
+
+            // Switch between sections
+            function showSection(sectionToShow) {
+                // Hide all sections
+                visitsSection.style.display = 'none';
+                pastVisitsSection.style.display = 'none';
+                medicalHistorySection.style.display = 'none';
+                profileEditSection.style.display = 'none';
+                
+                // Remove active class from all menu items
+                document.querySelectorAll('.account-menu a').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Show the selected section
+                if (sectionToShow === 'visits') {
+                    visitsSection.style.display = 'block';
+                    pastVisitsSection.style.display = 'block';
+                    showVisitsBtn.classList.add('active');
+                } else if (sectionToShow === 'medicalHistory') {
+                    medicalHistorySection.style.display = 'block';
+                    showMedicalHistoryBtn.classList.add('active');
+                } else if (sectionToShow === 'profileEdit') {
+                    profileEditSection.style.display = 'block';
+                    showProfileEditBtn.classList.add('active');
+                }
+            }
+
+            // Event listeners for menu items
+            showVisitsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('visits');
+            });
+
+            showMedicalHistoryBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('medicalHistory');
+            });
+
+            showProfileEditBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('profileEdit');
+            });
+
+            // Avatar upload preview
+            avatarInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        avatarPreview.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Form submission
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Update user info
+                userName.textContent = nameInput.value;
+                userEmail.textContent = emailInput.value;
+                
+                // Update avatar if changed
+                if (avatarInput.files && avatarInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        userAvatar.src = event.target.result;
+                    };
+                    reader.readAsDataURL(avatarInput.files[0]);
+                }
+                
+                // Show success message
+                alert('Профиль успешно обновлен!');
+                
+                // Return to visits section
+                showSection('visits');
+            });
+
+            // Cancel edit
+            cancelEditBtn.addEventListener('click', function() {
+                showSection('visits');
+            });
+
+            // Initialize with visits section visible
+            showSection('visits');
+        });
+    </script>
+</body>
+</html>
